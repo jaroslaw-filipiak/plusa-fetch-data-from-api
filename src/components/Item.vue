@@ -1,5 +1,5 @@
 <template>
-  <a :href="`${item?.url}`" class="item group">
+  <a target="_blank" :href="`${item?.url}`" class="item group">
     <div class="item__labels">
       <div class="label" v-if="item?.isAttractive">Okazja!</div>
     </div>
@@ -7,19 +7,13 @@
       class="item__photo"
       :style="`background-image: url(${item?.widePhotoUrl})`"
     >
-      <div
-        class="uppercase font-bold text-xl relative z-10 top-0 group-hover:-top-2 transition-all"
-      >
+      <div class="item__country-name">
         {{ item?.arrival?.countryName }}
       </div>
-      <div
-        class="text-lg relative z-10 top-0 group-hover:-top-2 transition-all"
-      >
+      <div class="item__arrival">
         {{ item?.arrival?.cityTo }}
       </div>
-      <div
-        class="text-xl bg-[#ffd200] pt-1 pb-1 pl-3 pr-3 mt-2 text-black rounded-lg font-medium relative z-10 top-0 group-hover:-top-2 transition-all"
-      >
+      <div class="item__price">
         {{ item?.price?.amount }}
         <span class="inline-flex text-[12px] relative -top-[2px]">/</span>
         {{ item?.price?.currency }}
@@ -30,7 +24,7 @@
         Odlot z: {{ item?.departure?.cityName }},
         {{ item?.departure?.airportName }}
       </p>
-      <p class="item__arrival">
+      <p class="item__destination">
         Miejsce docelowe: {{ item?.arrival?.cityName }},
         {{ item?.arrival?.countryName }}
       </p>
@@ -52,28 +46,123 @@
 <style lang="scss" scoped>
   .item {
     border-radius: 4px;
-    @apply min-h-[200px] bg-cover w-full relative text-black;
+    font-family: var(--theme-font-family);
+    background-size: cover;
+    position: relative;
+    width: 100%;
+
+    &:hover {
+      .item__photo {
+        background-size: 128%;
+        transition: var(--theme-transition);
+      }
+      .item__arrival,
+      .item__country-name,
+      .item__currency {
+        top: -6px;
+      }
+      .item__price {
+      }
+    }
+
+    p {
+      margin: 0;
+      padding: 0;
+      position: relative;
+      z-index: 10;
+    }
 
     &__labels {
-      @apply absolute top-4 left-4 z-10;
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      z-index: 10;
       .label {
-        @apply bg-[#ffd200] text-black pt-1 pb-1 pl-2 pr-2 rounded-md text-[12px] uppercase;
+        background: var(--theme-button-background-initial-color);
+        color: #000;
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        border-radius: 0.375rem;
+        text-transform: uppercase;
+        font-size: 12px;
       }
     }
 
     &__photo {
-      @apply text-white relative p-7 aspect-video rounded-xl bg-cover bg-center bg-no-repeat flex items-start flex-col justify-end;
+      color: var(--theme-palette-color-7);
+      position: relative;
+      padding: 1.75rem;
+      aspect-ratio: 16 / 9;
+      border-radius: 0.75rem;
+      background-size: 120%;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-end;
+      transition: var(--theme-transition);
+
       &:after {
         content: '';
-        @apply absolute inset-0 bg-black bg-opacity-30 group-hover:bg-opacity-10 transition-all rounded-xl;
+        position: absolute;
+        inset: 0px;
+        transition: var(--theme-transition);
+        border-radius: 0.75rem;
+        background-color: rgba(0, 0, 0, 0.3);
       }
     }
-    &__footer {
-      @apply p-4 text-black group-hover:text-black;
+
+    &__country-name {
+      font-size: 24px;
+      font-weight: 700;
+      position: relative;
+      z-index: 40;
+      top: 0;
+      transition: var(--theme-transition);
+      color: #fff;
     }
 
-    &__departure {
-      @apply text-lg;
+    &__arrival {
+      font-size: 1.125rem;
+      transition: var(--theme-transition);
+      position: relative;
+      z-index: 40;
+      top: 0;
+      color: #fff;
     }
+
+    &__price {
+      font-size: 1.125rem;
+      line-height: 1.75rem;
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      background-color: var(--theme-palette-color-1);
+      color: #000;
+      transition: var(--theme-transition);
+      position: relative;
+      z-index: 40;
+    }
+    &__footer {
+      padding: 1rem;
+      color: var(--theme-palette-color-3);
+    }
+
+    &__departure,
+    &__destination {
+      font-size: 1.25rem /* 20px */;
+      line-height: 1.75rem /* 28px */;
+    }
+
+    // &__destination {
+    //   font-size: 1.125rem;
+    //   line-height: 1.75rem;
+    // }
   }
 </style>

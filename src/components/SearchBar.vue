@@ -71,7 +71,7 @@
 
 <style lang="scss" scoped>
   .search-bar {
-    @apply bg-[#ffd200] rounded-xl  pl-10 pr-10 text-black flex items-center justify-center gap-[30px];
+    @apply bg-[#ffd200] rounded-xl  pl-10 pr-10 text-black flex items-center justify-center gap-[30px] font-poppins;
     label {
       @apply text-[14px] mr-5;
     }

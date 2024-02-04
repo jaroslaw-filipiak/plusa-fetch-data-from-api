@@ -7,11 +7,13 @@
 
   const loading = ref(false);
   const items = ref([]);
+  const error = ref(false);
 
   const filteredItems = computed(() => {
-    return items.value.filter(
-      (item) => item?.departure?.cityName === 'Katowice'
-    );
+    // return items.value.filter(
+    //   (item) => item?.departure?.cityName === 'Katowice'
+    // );
+    return items.value;
   });
 
   const handleSearch = () => {
@@ -29,7 +31,9 @@
       loading.value = false;
     } catch (e) {
       console.log(e);
+      console.log(e);
       loading.value = false;
+      error.value = true;
     }
   };
 
@@ -43,17 +47,46 @@
     <SearchBar @handleSearch="handleSearch" />
   </div>
 
-  <div
-    class="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[30px] items-start"
-    v-if="!loading"
-  >
+  <div class="items-wrapper" v-if="!loading">
     <Item v-for="item in filteredItems" :item="item" />
   </div>
   <div v-else>
-    <div class="container text-center pt-3 pb-3">
+    <div class="items-wrapper__loading">
       <p class="text-2xl">Wczytuje dane...</p>
     </div>
   </div>
+  <div class="items-wrapper__error" v-if="error">
+    <p class="text-2xl">
+      Wystąpił bład, nie udało się pobrać danych. Spróbuj ponownie później.
+    </p>
+  </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .items-wrapper {
+    display: grid;
+    align-items: grid-start;
+    justify-items: grid-start;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 30px;
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    &__error,
+    &__loading {
+      font-size: 1.5rem;
+      line-height: 2rem;
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+      text-align: center;
+    }
+  }
+
+  .items-wrapper > :nth-last-child(-n + 2) {
+    display: none;
+  }
+</style>
