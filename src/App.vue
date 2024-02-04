@@ -1,17 +1,36 @@
 <script setup>
   // import HelloWorld from './components/HelloWorld.vue';
+  import Item from './components/Item.vue';
+  import SearchBar from './components/SearchBar.vue';
 
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, computed } from 'vue';
 
-  const loading = ref(true);
+  const loading = ref(false);
   const items = ref([]);
 
-  const fetchData = async () => {
-    const response = await fetch(
-      'https://www2.esky.pl/api/v1.0/deals.json?partner_id=PLUSA'
+  const filteredItems = computed(() => {
+    return items.value.filter(
+      (item) => item?.departure?.cityName === 'Katowice'
     );
-    const data = await response.json();
-    items.value = data?.deals;
+  });
+
+  const handleSearch = () => {
+    console.log('search');
+  };
+
+  const fetchData = async () => {
+    loading.value = true;
+    try {
+      const response = await fetch(
+        'https://www2.esky.pl/api/v1.0/deals.json?partner_id=PLUSA'
+      );
+      const data = await response.json();
+      items.value = data?.deals;
+      loading.value = false;
+    } catch (e) {
+      console.log(e);
+      loading.value = false;
+    }
   };
 
   onMounted(() => {
@@ -20,22 +39,21 @@
 </script>
 
 <template>
-  <pre>
-    <code>{{ items.length }}</code>
-  </pre>
+  <div class="container mt-4 mb-4 hidden">
+    <SearchBar @handleSearch="handleSearch" />
+  </div>
+
+  <div
+    class="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[30px] items-start"
+    v-if="!loading"
+  >
+    <Item v-for="item in filteredItems" :item="item" />
+  </div>
+  <div v-else>
+    <div class="container text-center pt-3 pb-3">
+      <p class="text-2xl">Wczytuje dane...</p>
+    </div>
+  </div>
 </template>
 
-<style scoped>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.vue:hover {
-    filter: drop-shadow(0 0 2em #42b883aa);
-  }
-</style>
+<style lang="scss" scoped></style>
