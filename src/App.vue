@@ -1,7 +1,7 @@
 <script setup>
   // import HelloWorld from './components/HelloWorld.vue';
   import Item from './components/Item.vue';
-  import SearchBar from './components/SearchBar.vue';
+  // import SearchBar from './components/SearchBar.vue';
 
   import { ref, onMounted, computed } from 'vue';
 
@@ -43,9 +43,9 @@
 </script>
 
 <template>
-  <div class="container mt-4 mb-4 hidden">
+  <!-- <div class="container mt-4 mb-4 hidden">
     <SearchBar @handleSearch="handleSearch" />
-  </div>
+  </div> -->
 
   <div class="items-wrapper" v-if="!loading">
     <Item v-for="item in filteredItems" :item="item" />

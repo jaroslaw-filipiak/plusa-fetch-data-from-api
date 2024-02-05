@@ -105,6 +105,10 @@
       justify-content: flex-end;
       transition: var(--theme-transition);
 
+      @media (width <= 768px) {
+        background-size: cover;
+      }
+
       &:after {
         content: '';
         position: absolute;
